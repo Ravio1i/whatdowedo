@@ -1,0 +1,5 @@
+/bin/
+/whatdowedo
+.env
+*.test
+coverage.out

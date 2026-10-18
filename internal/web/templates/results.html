@@ -1,0 +1,43 @@
+<div class="card results">
+  <h2>{{.Context.Place.Display}} &middot; {{.Context.Weekday}}, {{.Context.Date}}</h2>
+  <p class="summary">{{.Summary}}</p>
+
+  <div class="facts">
+    <div>
+      <strong>Weather</strong>
+      {{if .Context.Weather.Available}}
+        {{.Context.Weather.Summary}}, {{printf "%.0f" .Context.Weather.TempMinC}}–{{printf "%.0f" .Context.Weather.TempMaxC}} °C,
+        rain {{.Context.Weather.PrecipProbMaxPct}} %, wind {{printf "%.0f" .Context.Weather.WindMaxKMH}} km/h,
+        sun {{.Context.Weather.Sunrise}}–{{.Context.Weather.Sunset}}
+      {{else}}<em>{{.Context.Weather.Note}}</em>{{end}}
+    </div>
+    <div><strong>Sources</strong>
+      {{range .Context.Providers}}<span class="prov {{if .Used}}ok{{else}}off{{end}}" title="{{.Reason}}">{{.Name}}{{if .Used}} ({{.Count}}){{end}}</span>{{end}}
+    </div>
+  </div>
+
+  {{if .Suggestions}}
+  <ol class="suggestions">
+    {{range .Suggestions}}
+    <li>
+      <div class="head">
+        <h3>{{.Title}}</h3>
+        <span class="meta">{{.Category}} · {{.TimeOfDay}} · {{if .Indoor}}indoor{{else}}outdoor{{end}} · {{.EstimatedCost}}</span>
+      </div>
+      <p>{{.Description}}</p>
+      <p class="why">{{.Why}}</p>
+      {{if or .Sources .URL}}<p class="src">{{range .Sources}}<span>{{.}}</span>{{end}}{{if .URL}}<a href="{{.URL}}" target="_blank" rel="noopener">link</a>{{end}}</p>{{end}}
+    </li>
+    {{end}}
+  </ol>
+  {{end}}
+
+  {{if .Caveats}}<ul class="caveats">{{range .Caveats}}<li>{{.}}</li>{{end}}</ul>{{end}}
+
+  <details>
+    <summary>{{len .Context.Events}} events and {{len .Context.Venues}} venues considered</summary>
+    {{if .Context.Events}}<h4>Events</h4><ul class="plain">{{range .Context.Events}}<li>{{.Start}} · <a href="{{.URL}}" target="_blank" rel="noopener">{{.Name}}</a> {{if .Venue}}@ {{.Venue}}{{end}} <small>{{.Category}}{{if .Genre}} / {{.Genre}}{{end}}</small></li>{{end}}</ul>{{end}}
+    {{if .Context.Venues}}<h4>Venues</h4><ul class="plain">{{range .Context.Venues}}<li><span class="st {{.Status}}">{{.Status}}</span> {{.Name}} <small>{{.Category}}{{if .HoursOnDate}} · {{.HoursOnDate}}{{end}} · {{.Source}}</small></li>{{end}}</ul>{{end}}
+  </details>
+  <p class="foot">model {{.LLMModel}}{{if .Cached}} · cached{{end}}</p>
+</div>

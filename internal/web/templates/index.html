@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What do we do?</title>
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://unpkg.com/htmx.org@2.0.4" crossorigin="anonymous"></script>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <h1>What do we do?</h1>
+    <p class="sub">Pick a day and a place. We check the weather, local events and which venues are open, then an open-source LLM plans your day.</p>
+  </header>
+
+  <form hx-post="/suggest" hx-target="#results" hx-indicator="#spinner" hx-disabled-elt="find button" class="card">
+    <div class="row">
+      <label>Date <input type="date" name="date" value="{{.Today}}" required></label>
+      <label class="grow">Location <input type="text" name="location" placeholder="e.g. Erlangen, Germany" required autofocus></label>
+    </div>
+    <label>Preferences <textarea name="preferences" rows="2" placeholder="e.g. two adults, like hiking and good coffee, no museums, budget around 50 €"></textarea></label>
+    <fieldset class="tags">
+      {{range .Tags}}<label class="chip"><input type="checkbox" name="tags" value="{{.}}"><span>{{.}}</span></label>{{end}}
+    </fieldset>
+    <div class="actions">
+      <button type="submit">Suggest activities</button>
+      <span id="spinner" class="htmx-indicator">Checking weather, events and venues…</span>
+    </div>
+  </form>
+
+  <section id="results"></section>
+
+  <footer>
+    <p>JSON API: <code>POST /api/suggest {"date":"YYYY-MM-DD","location":"…","preferences":"…","tags":["outdoor"]}</code>
+    &middot; <a href="https://github.com/ravio1i/whatdowedo">source</a></p>
+  </footer>
+</main>
+</body>
+</html>
