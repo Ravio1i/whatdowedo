@@ -23,4 +23,4 @@ deploy: ## relay latest ghcr image into fly's registry and deploy it
 	docker pull --platform linux/amd64 $(IMAGE):latest
 	docker tag $(IMAGE):latest registry.fly.io/$(APP):latest
 	docker push registry.fly.io/$(APP):latest
-	flyctl deploy --app $(APP) --image registry.fly.io/$(APP):latest
+	flyctl deploy --app $(APP) --image registry.fly.io/$(APP):latest --ha=false

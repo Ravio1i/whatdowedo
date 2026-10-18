@@ -85,4 +85,4 @@ jobs:
           docker tag "$SRC" "$DST"
           docker push "$DST"
           echo "DST=$DST" >> "$GITHUB_ENV"
-      - run: flyctl deploy --app "$FLY_APP" --image "$DST"
+      - run: flyctl deploy --app "$FLY_APP" --image "$DST" --ha=false
