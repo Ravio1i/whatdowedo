@@ -18,5 +18,9 @@ docker:
 docker-run: docker
 	docker run --rm -p 8080:8080 --env-file .env $(IMAGE):dev
 
-deploy: ## deploy the latest pushed image to fly.io
-	flyctl deploy --image $(IMAGE):latest
+deploy: ## relay latest ghcr image into fly's registry and deploy it
+	flyctl auth docker
+	docker pull --platform linux/amd64 $(IMAGE):latest
+	docker tag $(IMAGE):latest registry.fly.io/$(APP):latest
+	docker push registry.fly.io/$(APP):latest
+	flyctl deploy --app $(APP) --image registry.fly.io/$(APP):latest
