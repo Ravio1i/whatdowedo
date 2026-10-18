@@ -75,8 +75,8 @@ flyctl secrets set LLM_API_KEY=... TICKETMASTER_API_KEY=... GEOAPIFY_API_KEY=...
 flyctl tokens create deploy -x 999999h   # store as repo secret FLY_API_TOKEN
 ```
 
-The ghcr package must be public (or fly needs registry credentials) for
-`flyctl deploy --image` to pull it. Manual deploy: `make deploy`.
+CI relays the built digest from ghcr into `registry.fly.io`, so the ghcr
+package can stay private. Manual deploy: `make deploy`.
 
 ## Development
 

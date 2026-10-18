@@ -2,7 +2,7 @@ app = "whatdowedo"
 primary_region = "fra"
 
 [build]
-  image = "ghcr.io/ravio1i/whatdowedo:latest"
+  image = "registry.fly.io/whatdowedo:latest"
 
 [env]
   PORT = "8080"
